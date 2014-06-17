@@ -5,7 +5,7 @@
         version   = "1.0.0">
  
 	<!-- Basic -->
-   	<name>AroundIDE</name>
+   	<name>AroundIDE. Exercici pràctic curs d'introducció al desenvolupament d'aplicacions per a dispositius mòbils</name>
     <description>
         La informació de google Place damunt la IDE menorca. Pràctiques del curs d'introducció al desenvolupament d'aplicacions per a dispositius mòbils
     </description>
