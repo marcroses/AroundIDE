@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ca">
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        
+        <title>Around IDE</title>
+
+		<!-- JQUERY MOBILE -->
+        <script type="text/javascript" src="library/jquery-1.10/jquery-1.10.1.min.js"></script>
+        <script src="library/jquery-mobile/jquery.mobile-1.3.2.min.js"></script>
+        
+
+        <script src="phonegap.js"></script>
+
+        <!--Cridem la llibreria OpenLayers, proj4js i estils-->
+	    <script type="text/javascript" src="library/OpenLayers-2.13.1/OpenLayers.mobile.js"></script>
+	    <link rel="stylesheet" href="library/OpenLayers-2.13.1/theme/default/style.mobile.css" type="text/css">
+	    <script type="text/javascript" src="library/proj4js/proj4js-combined.js"></script>        
+
+		<!-- ESTILS -->
+        <link rel="stylesheet" href="css/AroundIDE/AroundIDE.css" />
+        <link rel="stylesheet" href="css/jquery.mobile.structure-1.3.2.min.css" />
+        <link rel="stylesheet" href="css/basic/style.css">
+
+		<script type="text/javascript" src="js/main.js"></script>
+		<script type="text/javascript" src="js/AroundIDE.js"></script>
+		<script type="text/javascript" src="js/mapa.js"></script>
+		<script type="text/javascript" src="js/location.js"></script>
+
+    </head>
+    <body onload="main()">     
+     
+        <!-- 
+        ===========================
+        PANTALLA INCIAL
+        ===========================
+		-->
+        <div id="splash" data-role="page" data-theme="c">
+            <div data-role="header" data-position="fixed" data-id="headerFixed" data-tap-toggle="false"  data-theme="b">
+                <h1>Around IDE</h1>
+		<a href="#credits" class="ui-btn-right" data-icon="info" data-iconpos="notext" data-rel="dialog" data-transition="fade">Cr&egrave;dits</a>
+            </div>
+            <div data-role="content" role="main" style="padding: 1px;">
+                <center>
+                    <h2>Benvinguts a Around IDE</h2>
+                    <h4>La informaci&oacute; de Google Place de Menorca</h4>
+                    <img id="imgLogoIni" src='img/logo.png' style="visibility: hidden;">
+                </center>
+            </div>
+            <div data-role="footer" data-position="fixed" data-id="footerFixed" data-tap-toggle="false" data-theme="b">
+                <div data-role="navbar">
+                    <ul>
+                        <li>
+                            <a class="footerMenuItem" id="tabExit0" data-icon="back" data-iconpos="top">Sortir</a>
+                        </li>
+                        <li>
+							<a href="#home" class="footerMenuItem" id="tabStart0" data-icon="home" data-iconpos="top">Iniciar</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>    
+
+	<!-- 
+        ===========================
+        HOME
+        ===========================
+	-->
+        <div id="home" data-role="page" data-theme="c">
+            <div data-role="header" data-position="fixed" data-id="headerFixed" data-tap-toggle="false"  data-theme="b">
+                <h1>Around IDE</h1>
+                <a href="#credits" class="ui-btn-right" data-icon="info" data-iconpos="notext" data-rel="dialog" data-transition="fade">Cr&egrave;dits</a>
+            </div>
+            <div data-role="content" role="main" style="padding: 10px;">
+                <div id="geolocation" style="position:absolute; top:50px;">Lat</div>
+				<img src="img/powered-by-google-on-white2.png" style="position:absolute;right:5px; top:50px;">
+				<div style="position:absolute;top:70px;width:90%">
+                    <hr><label for="slider-fill">Cercar informaci&oacute; en un radi de (metres):</label>
+                    <input type="range" name="slider-fill" id="infoListDistance" value="0" min="0" max="2000" data-highlight="true" step="100" />
+                    <div>
+                        Sobre:
+                    </div>
+    
+                    <hr>
+                    <center>
+                    <a href="#" onclick="find('bar')" data-role="button" style="width:90%;" data-theme="e">Bars</a>
+                    <a href="#" onclick="find('cafe')" data-role="button" style="width:90%;" data-theme="e">Caf&egrave;s</a>
+                    <a href="#" onclick="find('lodging')" data-role="button" style="width:90%;" data-theme="e">Hotels</a>
+                    <a href="#" onclick="find('restaurant')" data-role="button" style="width:90%;" data-theme="e">Restaurants</a>
+                    <a href="#" onclick="find('store')" data-role="button" style="width:90%;" data-theme="e">Supermercats</a>
+                    <hr>
+                    <a href="#" onclick="find('bank')" data-role="button" style="width:90%;" data-theme="a">Bancs</a>
+                    <hr>
+                    <a href="#" onclick="find('bicycle_store')" data-role="button" style="width:90%;" data-theme="b">Bicicletes</a>
+                    <a href="#" onclick="find('gas_station')" data-role="button" style="width:90%;" data-theme="b">Gasolineres</a>
+                    <hr>
+                    <a href="#" onclick="find('pharmacy')" data-role="button" style="width:90%;" data-theme="d">Farm&agrave;cies</a>
+                    <a href="#" onclick="find('hospital')" data-role="button" style="width:90%;" data-theme="d">Hospitals</a>
+                    </center>
+				</div>
+            </div>
+            <div data-role="footer" data-position="fixed" data-id="footerFixed" data-tap-toggle="false" data-theme="b">
+
+		<div data-role="navbar">
+				    <ul>
+				        <li>
+				            <a class="footerMenuItem" id="tabConfig1" data-icon="gear" data-rel="dialog" data-iconpos="top" href="#configuracio">Configuraci&oacute;</a>
+				        </li>
+				        <li>
+				            <a class="footerMenuItem" id="tabExit1"  data-icon="back" data-iconpos="top">Sortir</a>
+				        </li>
+				    </ul>
+				</div>
+            </div>
+        </div>  
+
+
+   <!-- 
+        ===========================
+        PANTALLA ENCERTS LLISTA
+        ===========================
+		-->
+        <div id="encerts" data-role="page" data-theme="c">
+            <div data-role="header" data-position="fixed" data-id="headerFixed" data-tap-toggle="false"  data-theme="b">
+                <a href="#home" data-role="button" data-icon="home">Inici</a>
+                <h1>Around IDE</h1>
+                <a href="credits.html" class="ui-btn-right" data-icon="info" data-iconpos="notext" data-rel="dialog" data-transition="fade">Cr&egrave;dits</a>
+            </div>
+            <div data-role="content" role="main" style="padding: 10px;">
+                <div id="contentEncerts">Carregant dades. Per favor, esperi...</div>
+                <br>
+                <div style="padding:0px;">                
+                <center>
+                    <div data-role="controlgroup" style="padding:10px;">
+                        <ul id="llistaEncerts" data-role="listview" >
+                        	<li><a href=”#”>Això és un ítem</a></li>
+                        </ul>
+                    </div>
+                </center>
+                </div>
+            </div>
+            <div data-role="footer" data-position="fixed" data-id="footerFixed" data-tap-toggle="false" data-theme="b">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a class="footerMenuItem" id="tabEncert1" data-icon="grid" data-rel="dialog" data-iconpos="top" href="#">Llista</a></li>
+                        <li><a class="footerMenuItem" id="tabEncert2" data-icon="info" data-iconpos="top" href="#pageMapa">Mapa</a></li>
+                        <li><a class="footerMenuItem" id="tabEncert3" data-icon="search" data-iconpos="top">C&aacute;mara</a></li>
+                    </ul>
+                </div>
+            </div>            
+        </div>  
+
+	<!-- 
+        ===========================
+        PANTALLA DETALL
+        ===========================
+        -->
+        <div id="detall" data-role="page" data-theme="c" style="padding: 0px;">
+            <div data-role="header" data-position="fixed" data-id="headerFixed" data-tap-toggle="false"  data-theme="b">
+                <a href="#encerts" data-role="button" data-icon="back">Enrere</a>
+                <h1>Around IDE</h1>
+                <a href="#credits" class="ui-btn-right" data-icon="info" data-iconpos="notext" data-rel="dialog" data-transition="fade">Cr&egrave;dits</a>
+            </div>
+            <div data-role="content" role="main" style="padding: 0px;">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a class="footerMenuItem" id="tabMapa3" data-theme="a">Mapa</a></li>
+                        <li><a class="footerMenuItem" id="tabMapa4" data-theme="a">Sat&egrave;l·lit</a></li>
+                    </ul>
+                </div>              	
+                <div id="mapCanvas2" style="width:100%;background-color: white;"></div>
+                <div id="contentDetall" style="padding:10px;">Carregant dades. Per favor, esperi...</div>
+            </div>
+        </div>  
+        
+        
+        <!-- 
+        ===========================
+        PANTALLA PAGEMAPA
+        ===========================
+		-->
+        <div id="pageMapa" data-role="page" data-theme="c" style="padding: 0px;">
+            <div data-role="header" data-position="fixed" data-id="headerFixed" data-tap-toggle="false"  data-theme="b">
+                <a href="#home" data-role="button" data-icon="home">Inici</a>
+                <h1>Around IDE</h1>
+                <a href="#credits" class="ui-btn-right" data-icon="info" data-iconpos="notext" data-rel="dialog" data-transition="fade">Cr&egrave;dits</a>
+                <div data-role="navbar">
+                    <ul>
+                        <li><a class="footerMenuItem" id="tabMapa1" data-theme="a">Mapa</a></li>
+                        <li><a class="footerMenuItem" id="tabMapa2" data-theme="a">Sat&egrave;l·lit</a></li>
+                    </ul>
+                </div>                
+            </div>
+            <div data-role="content" role="main" style="padding: 0px;">
+                <center>
+                    <div id="mapCanvas" style="width:100%;background-color: white;"></div>
+                </center>
+            </div>
+            <div data-role="footer" data-position="fixed" data-id="footerFixed" data-tap-toggle="false" data-theme="b">
+                <div data-role="navbar">
+                    <ul>
+                        <li><a class="footerMenuItem" id="tabEncert1" data-icon="grid" data-rel="dialog" data-iconpos="top" href="#encerts">Llista</a></li>
+                        <li><a class="footerMenuItem" id="tabEncert2" data-icon="info" data-iconpos="top" href="#">Mapa</a></li>
+                        <li><a class="footerMenuItem" id="tabEncert3" data-icon="search" data-iconpos="top">C&aacute;mara</a></li>
+                    </ul>
+                </div>
+            </div>            
+        </div>          
+
+         <!-- 
+        ===========================
+        PANTALLA CREDITS
+        ===========================
+		-->        
+		<div id="credits" data-role="page" data-theme="c">	
+			<div data-role="header" data-position="fixed" data-theme="b">
+				<h1>AroundIDE - Credits</h1>
+			</div>
+			<div data-role="content" data-theme="c">
+				<a href="http://www.iesjoanramis.org"><img src="img/ramis.png" alt="IES Ramis"/ style="display: inline-block;margin-top: 15px" ></a>
+				<br/><a href="http://cartografia.cime.es"><img src="img/logoIDE transpaent.png" alt="IDE menorca" width=300/>
+			</div>
+		</div>         
+
+	<!--
+        ===========================
+        CONFIGURACIO
+        ===========================
+        -->
+        <div id="configuracio" data-role="page" data-theme="b">
+            <div data-role="header" data-position="fixed" data-theme="b">
+                <h1>Localitzaci&oacute;</h1>
+            </div>
+            <div data-role="content">
+                <fieldset data-role="controlgroup" >
+
+                        <legend>Selecciona una opció</legend>
+                        
+                        <input type="radio" name="radio-localitzacio" id="radio-1" value="HTML5" checked="checked" />
+                        <label for="radio-1">Localitzaci&oacute; per Wifi (HTML5)</label>
+                 
+                        <input type="radio" name="radio-localitzacio" id="radio-2" value="GPS"  />
+                        <label for="radio-2">Localitzaci&oacute; per GPS</label>
+        
+                </fieldset>   
+                <hr>
+                <a href=""  data-role="button" data-theme="b" id="btnAcceptarLocalitzacio">Aceptar</a>  
+            </div><!-- /content -->
+        </div> 
+
+    </body>
+</html>

@@ -1,0 +1,74 @@
+//===================
+//PAGE SPLASH
+//===================
+$(document).on ('pageinit', '#splash', function (event) {
+    $("#tabExit0").bind('click', function(event, ui){
+		alert("codi per sortir");
+    }); 
+});
+
+//==================
+//PAGE HOME
+//==================
+$(document).on ('pageinit', '#home', function (event) {
+    $("#tabExit1").bind('click', function(event, ui){
+        alert("codi per sortir");
+    }); 
+});
+$(document).on ('pageshow', '#home', function (event) {
+	getLocation();
+});
+
+//==================
+//PAGE CONFIGURACIO
+//==================
+$(document).on ('pageinit', '#configuracio', function (event) {
+    $("#btnAcceptarLocalitzacio").bind('click', function(event, ui){
+        $("input[name*=radio-localitzacio]:checked").each(function() {
+        	metodeLocalitzacio = $(this).val();
+        })
+        alert(metodeLocalitzacio);
+        $.mobile.changePage("#home");
+    }); 
+});
+
+
+function find(valor)
+{
+	url="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + geoLocationY + "," + geoLocationX + "&radius=" + $("#infoListDistance").val() + "&types=" + valor + "&sensor=false&key=AIzaSyBYbAJw6aAbrVOxx-OaxNiLDlVmvxyCoPc";
+	//alert(url);
+	$.ajax({
+		url: 'bars.json',
+		cache: false,
+		dataType: 'json',
+		success: function(data) { 
+			if(!data.error){
+				//Inicialitza la llista desplegable
+				$("#llistaEncerts").empty();
+				if(data.results!=null){
+					if(data.results.length==0){
+						alert("no hi ha encerts!")
+					}
+					else{
+						var numResultats=0;
+						$.each(data.results, function(i, item) {
+							numResultats++;
+							$("#llistaEncerts").append('<li onclick="placeDetall(\'' + item.reference + '\')"><a href="#"><h3>' + item.name +'</h3><div style="font-size:12px;">' + item.vicinity + '</div></a></li>');
+						});
+					}
+					//Actualiza la lista
+					$("#llistaEncerts").listview("refresh");
+					$("#contentEncerts").html("Hi ha " + numResultats + " encerts:")
+				}
+			}else{
+				alert("Error carregant dades.");
+			}
+		},
+		error: function(data) {
+			alert("Error carregant dades: "+data.responseText);
+			$.mobile.hidePageLoadingMsg( 'Searching' );
+		}
+	});
+	$.mobile.changePage("#encerts");
+}
+

@@ -1,0 +1,4 @@
+var metodeLocalitzacio="HTML5";
+var geoLocationX=null;
+var geoLocationY=null;
+
